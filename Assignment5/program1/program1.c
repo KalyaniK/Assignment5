@@ -5,7 +5,7 @@
 int main()
 {
     int fd[2];
-    char message[MAX_SIZE];
+    char message[MAX_SIZE] = "Some text message for IPC";
 
     pipe(fd);
 
@@ -14,17 +14,14 @@ int main()
       //Child process
       printf("In child process\n");
       close(fd[0]);
-      printf("Enter a message: ");
-      gets(message);
-      write(fd[1], message, strlen(message));
+      read(fd[0], message, sizeof(message));
+      printf("Message entered - %s\n", message);
     }
     else
     {
       //Parent Process
       printf("In parent process\n");
       close(fd[1]);
-      read(fd[0], message, sizeof(message));
-      printf("Message entered - %s\n", message);
    }
    return 0;
 }
